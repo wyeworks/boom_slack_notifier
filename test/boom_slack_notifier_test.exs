@@ -87,53 +87,48 @@ defmodule BoomSlackNotifierTest do
 
     catch_error(TestRouter.call(conn, TestRouter.init([])))
 
-    receive do
-      {:ok, request, url, headers} ->
-        assert url == @slack_webhook_url
+    assert_receive {:ok, request, url, headers}
+    assert url == @slack_webhook_url
 
-        message = Jason.decode!(request, keys: :atoms)
-        assert message.text == @expected_message.text
-        assert headers == [{"Content-type", "application/json"}]
+    message = Jason.decode!(request, keys: :atoms)
+    assert message.text == @expected_message.text
+    assert headers == [{"Content-type", "application/json"}]
 
-        [
-          message_header,
-          message_summary,
-          message_request,
-          message_metadata,
-          message_stacktrace,
-          message_reason,
-          message_occurrences,
-          _divider
-        ] = message.blocks
+    [
+      message_header,
+      message_summary,
+      message_request,
+      message_metadata,
+      message_stacktrace,
+      message_reason,
+      message_occurrences,
+      _divider
+    ] = message.blocks
 
-        [accumulated_errors, first_occurrence, last_occurrence] = message_occurrences.fields
+    [accumulated_errors, first_occurrence, last_occurrence] = message_occurrences.fields
 
-        [
-          expected_header,
-          expected_summary,
-          expected_request,
-          expected_metadata,
-          expected_reason,
-          _divider
-        ] = @expected_message.blocks
+    [
+      expected_header,
+      expected_summary,
+      expected_request,
+      expected_metadata,
+      expected_reason,
+      _divider
+    ] = @expected_message.blocks
 
-        assert message_summary == expected_summary
-        assert message_request == expected_request
-        assert message_metadata == expected_metadata
-        assert message_header == expected_header
-        assert message_reason == expected_reason
+    assert message_summary == expected_summary
+    assert message_request == expected_request
+    assert message_metadata == expected_metadata
+    assert message_header == expected_header
+    assert message_reason == expected_reason
 
-        assert message_stacktrace.text.text =~ @expected_stacktrace_entry
+    assert message_stacktrace.text.text =~ @expected_stacktrace_entry
 
-        assert accumulated_errors.text =~ "Errors:"
-        assert first_occurrence.text =~ "First occurrence:"
-        assert last_occurrence.text =~ "Last occurrence:"
+    assert accumulated_errors.text =~ "Errors:"
+    assert first_occurrence.text =~ "First occurrence:"
+    assert last_occurrence.text =~ "Last occurrence:"
 
-        last_occurrence_datetime = Helpers.datetime_from_text_field(last_occurrence.text)
-        assert DateTime.diff(last_occurrence_datetime, DateTime.utc_now()) < 2
-    after
-      1000 ->
-        flunk("Message not received")
-    end
+    last_occurrence_datetime = Helpers.datetime_from_text_field(last_occurrence.text)
+    assert DateTime.diff(last_occurrence_datetime, DateTime.utc_now()) < 2
   end
 end
