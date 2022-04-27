@@ -1,7 +1,7 @@
 defmodule Support.HttpAdapterMock do
-  @behaviour SlackClient.HttpAdapter
+  @behaviour BoomSlackNotifier.SlackClient.HttpAdapter
 
-  @impl SlackClient.HttpAdapter
+  @impl BoomSlackNotifier.SlackClient.HttpAdapter
 
   @spec post(any, binary, HTTPoison.Base.headers()) ::
           {:ok,

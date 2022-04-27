@@ -21,6 +21,7 @@ defmodule BoomSlackNotifier.SlackNotifier do
   @behaviour BoomNotifier.Notifier
 
   alias BoomSlackNotifier.SlackMessage
+  alias BoomSlackNotifier.SlackClient
 
   @type options :: [{:slack_webhook_url, String.t()}]
 

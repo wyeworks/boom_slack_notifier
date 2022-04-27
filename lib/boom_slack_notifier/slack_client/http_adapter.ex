@@ -1,4 +1,4 @@
-defmodule SlackClient.HttpAdapter do
+defmodule BoomSlackNotifier.SlackClient.HttpAdapter do
   @moduledoc false
 
   @doc """
