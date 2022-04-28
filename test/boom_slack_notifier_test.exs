@@ -1,8 +1,8 @@
 defmodule BoomSlackNotifierTest do
   use ExUnit.Case, async: false
   use Plug.Test
-  alias Support.TestRouter
-  alias Support.Helpers
+  alias Support.{TestRouter, Helpers}
+  import ExUnit.CaptureLog
 
   @expected_message %{
     blocks: [
@@ -70,25 +70,42 @@ defmodule BoomSlackNotifierTest do
 
   # The complete text and format of the stacktrace will vary depending on the elixir version, we therefore only check for the first entry
   @expected_stacktrace_entry "test/support/phoenix_app_mock.ex:10: Support.TestController.index/2"
-  @slack_webhook_url Helpers.mock_slack_webhook_url()
+  @success_webhook_url "http://www.someurl.com/123"
 
   setup do
     Process.register(self(), :test_process)
     Logger.metadata(name: "Dennis", age: 17)
+
+    Application.put_env(:boom_slack_notifier, :test_webhook_url, value: @success_webhook_url)
   end
 
   test "validates return {:error, message} when url is not present" do
-    assert {:error, ":slack_webhook_url parameter is missing"} ==
+    assert {:error, ":webhook_url parameter is missing"} ==
              BoomSlackNotifier.SlackNotifier.validate_config(random_param: nil)
   end
 
+  test "logs an error when the request fails" do
+    Application.put_env(:boom_slack_notifier, :test_webhook_url, value: "failing_url")
+
+    assert capture_log(fn ->
+             conn = conn(:get, "/")
+
+             catch_error(TestRouter.call(conn, TestRouter.init([])))
+
+             Process.sleep(100)
+           end) =~
+             "An error occurred when sending a notification: Could not resolve URL"
+  end
+
   test "request is sent to webhook" do
+    Application.put_env(:boom_slack_notifier, :test_webhook_url, value: @success_webhook_url)
+
     conn = conn(:get, "/")
 
     catch_error(TestRouter.call(conn, TestRouter.init([])))
 
     assert_receive {:ok, request, url, headers}
-    assert url == @slack_webhook_url
+    assert url == @success_webhook_url
 
     message = Jason.decode!(request, keys: :atoms)
     assert message.text == @expected_message.text

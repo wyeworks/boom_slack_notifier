@@ -10,7 +10,7 @@ defmodule BoomSlackNotifier.SlackNotifier do
   use BoomNotifier,
     notifier: BoomSlackNotifier.SlackNotifier,
     options: [
-      slack_webhook_url: "<your-slack-generated-url>"
+      webhook_url: "<your-slack-generated-url>"
     ]
   # ...
   ```
@@ -20,17 +20,17 @@ defmodule BoomSlackNotifier.SlackNotifier do
 
   @behaviour BoomNotifier.Notifier
 
-  alias BoomSlackNotifier.SlackMessage
-  alias BoomSlackNotifier.SlackClient
+  alias BoomSlackNotifier.{SlackMessage, SlackClient}
+  require Logger
 
-  @type options :: [{:slack_webhook_url, String.t()}]
+  @type options :: [{:webhook_url, String.t()}]
 
   @impl BoomNotifier.Notifier
   def validate_config(options) do
-    if Keyword.has_key?(options, :slack_webhook_url) do
+    if Keyword.has_key?(options, :webhook_url) do
       :ok
     else
-      {:error, ":slack_webhook_url parameter is missing"}
+      {:error, ":webhook_url parameter is missing"}
     end
   end
 
@@ -39,14 +39,22 @@ defmodule BoomSlackNotifier.SlackNotifier do
   def notify(error_info, options) do
     headers = [{"Content-type", "application/json"}]
 
-    error_info
-    |> SlackMessage.create_message()
-    |> Jason.encode!()
-    |> http_adapter().post(options[:slack_webhook_url], headers)
+    response =
+      error_info
+      |> SlackMessage.create_message()
+      |> Jason.encode!()
+      |> http_adapter().post(options[:webhook_url], headers)
+
+    case response do
+      {:error, info} ->
+        Logger.error("An error occurred when sending a notification: #{info}")
+
+      _ ->
+        nil
+    end
   end
 
   @spec http_adapter() :: no_return()
-  defp http_adapter() do
-    Application.get_env(:boom_slack_notifier, :http_adapter, SlackClient.HTTPoisonAdapter)
-  end
+  defp http_adapter(),
+    do: Application.get_env(:boom_slack_notifier, :http_adapter, SlackClient.HTTPoisonAdapter)
 end

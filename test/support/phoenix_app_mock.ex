@@ -14,12 +14,11 @@ end
 defmodule Support.TestRouter do
   use Phoenix.Router
   import Phoenix.Controller
-  alias Support.Helpers
 
   use BoomNotifier,
     notifier: BoomSlackNotifier.SlackNotifier,
     options: [
-      slack_webhook_url: Helpers.mock_slack_webhook_url()
+      webhook_url: Application.get_env(:boom_slack_notifier, :test_webhook_url)[:value]
     ],
     custom_data: [:assigns, :logger]
 

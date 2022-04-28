@@ -27,13 +27,13 @@ defmodule YourApp.Router do
   use BoomNotifier,
     notifier: BoomSlackNotifier.SlackNotifier,
     options: [
-      slack_webhook_url: "<your-slack-generated-url>",
+      webhook_url: "<your-slack-generated-url>",
     ]
 
   # ...
 ```
 
-To configure it, you need to set the `slack_webhook_url` in the `options` keyword list. A `POST` request with a `json` will be made to that webhook when an error ocurrs with the relevant information.
+To configure it, you need to set the `webhook_url` in the `options` keyword list. A `POST` request with a `json` will be made to that webhook when an error ocurrs with the relevant information.
 
 If you don't already have a webhook setup for slack, you can follow the steps below:
 
