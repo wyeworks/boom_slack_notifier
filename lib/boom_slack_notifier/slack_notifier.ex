@@ -1,6 +1,6 @@
 defmodule BoomSlackNotifier.SlackNotifier do
   @moduledoc """
-  Send exception notifications as slack messages using `HTTPoison`.
+  Send exception notifications as slack messages through http requests
 
   ## Usage
   ```elixir
@@ -47,6 +47,6 @@ defmodule BoomSlackNotifier.SlackNotifier do
 
   @spec http_adapter() :: no_return()
   defp http_adapter() do
-    Application.get_env(:boom_slack_notifier, :http_adapter, SlackClient.SlackAdapter)
+    Application.get_env(:boom_slack_notifier, :http_adapter, SlackClient.HTTPoisonAdapter)
   end
 end

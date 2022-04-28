@@ -3,10 +3,7 @@ defmodule Support.HttpAdapterMock do
 
   @impl BoomSlackNotifier.SlackClient.HttpAdapter
 
-  @spec post(any, binary, HTTPoison.Base.headers()) ::
-          {:ok,
-           HTTPoison.Response.t() | HTTPoison.AsyncResponse.t() | HTTPoison.MaybeRedirect.t()}
-          | {:error, HTTPoison.Error.t()}
+  @spec post(any, binary, any) :: no_return()
   def post(body, url, headers) do
     send(:test_process, {:ok, body, url, headers})
   end

@@ -43,6 +43,36 @@ If you don't already have a webhook setup for slack, you can follow the steps be
 4. Activate incoming webhooks for your application
 5. Scroll down to 'Webhook URLs for Your Workspace' and create a new Webhook URL for a given channel.
 
+## Http client
+
+By default BoomSlackNotifier uses [HTTPoison](https://github.com/edgurgel/httpoison) as the http client. 
+
+You can setup your favorite client by warpping it with the `SlackClient.HttpAdapter` behaviour, for example:
+
+```
+#mojito_http_adapter.ex
+
+  @impl BoomSlackNotifier.SlackClient.HttpAdapter
+  @spec post(any, binary, any) :: {:ok, any} | {:error, any}
+  def post(body, url, headers) do
+    {:ok, response} = Mojito.request(body: body, method: :post, url: url, headers: headers)
+    # ...
+  end
+```
+
+And then specifying it in your application configuration:
+
+```
+#config.exs
+
+config :boom_slack_notifier, :http_adapter, MyApp.MojitoHttpAdapter
+
+```
+
+Default configuration (not required): 
+```
+config :boom_slack_notifier, :http_adapter, BoomSlackNotifier.SlackClient.HTTPoisonAdapter
+```
 ## License
 
 BoomSlackNotifier is released under the terms of the [MIT License](https://github.com/wyeworks/boom/blob/master/LICENSE).
