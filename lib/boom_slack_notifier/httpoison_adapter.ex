@@ -1,4 +1,4 @@
-defmodule BoomSlackNotifier.SlackClient.HTTPoisonAdapter do
+defmodule BoomSlackNotifier.HTTPoisonAdapter do
   @moduledoc false
 
   @behaviour BoomSlackNotifier.SlackAdapter

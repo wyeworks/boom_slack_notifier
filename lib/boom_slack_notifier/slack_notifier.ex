@@ -16,11 +16,9 @@ defmodule BoomSlackNotifier.SlackNotifier do
   ```
   """
 
-  @dialyzer {:nowarn_function, slack_adapter: 0}
-
   @behaviour BoomNotifier.Notifier
 
-  alias BoomSlackNotifier.{SlackMessage, SlackClient}
+  alias BoomSlackNotifier.{SlackMessage, SlackAdapter, HTTPoisonAdapter}
   require Logger
 
   @type options :: [{:webhook_url, String.t()}]
@@ -54,7 +52,12 @@ defmodule BoomSlackNotifier.SlackNotifier do
     end
   end
 
-  @spec slack_adapter() :: no_return()
+  @spec slack_adapter() :: SlackAdapter
   defp slack_adapter(),
-    do: Application.get_env(:boom_slack_notifier, :slack_adapter, SlackClient.HTTPoisonAdapter)
+    do:
+      Application.get_env(
+        :boom_slack_notifier,
+        :slack_adapter,
+        HTTPoisonAdapter
+      )
 end
