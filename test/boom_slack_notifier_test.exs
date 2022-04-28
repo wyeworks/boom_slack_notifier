@@ -73,7 +73,7 @@ defmodule BoomSlackNotifierTest do
   @success_webhook_url "http://www.someurl.com/123"
 
   setup do
-    Process.register(self(), :test_process)
+    Helpers.register_test_process()
     Logger.metadata(name: "Dennis", age: 17)
 
     Application.put_env(:boom_slack_notifier, :test_webhook_url, value: @success_webhook_url)

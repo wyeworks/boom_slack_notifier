@@ -1,5 +1,6 @@
 defmodule Support.HttpAdapterMock do
   @behaviour BoomSlackNotifier.SlackClient.HttpAdapter
+  alias Support.Helpers
 
   @impl BoomSlackNotifier.SlackClient.HttpAdapter
 
@@ -9,6 +10,6 @@ defmodule Support.HttpAdapterMock do
   end
 
   def post(body, url, headers) do
-    send(:test_process, {:ok, body, url, headers})
+    send(Helpers.get_test_process_name(), {:ok, body, url, headers})
   end
 end
