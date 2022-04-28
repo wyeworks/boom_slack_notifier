@@ -1,11 +1,11 @@
 defmodule BoomSlackNotifier.SlackClient.HTTPoisonAdapter do
   @moduledoc false
 
-  @behaviour BoomSlackNotifier.SlackClient.HttpAdapter
+  @behaviour BoomSlackNotifier.SlackAdapter
 
   HTTPoison.start()
 
-  @impl BoomSlackNotifier.SlackClient.HttpAdapter
+  @impl BoomSlackNotifier.SlackAdapter
   @spec post(any, binary, HTTPoison.Base.headers()) ::
           {:ok,
            HTTPoison.Response.t() | HTTPoison.AsyncResponse.t() | HTTPoison.MaybeRedirect.t()}

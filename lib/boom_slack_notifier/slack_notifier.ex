@@ -16,7 +16,7 @@ defmodule BoomSlackNotifier.SlackNotifier do
   ```
   """
 
-  @dialyzer {:nowarn_function, http_adapter: 0}
+  @dialyzer {:nowarn_function, slack_adapter: 0}
 
   @behaviour BoomNotifier.Notifier
 
@@ -43,7 +43,7 @@ defmodule BoomSlackNotifier.SlackNotifier do
       error_info
       |> SlackMessage.create_message()
       |> Jason.encode!()
-      |> http_adapter().post(options[:webhook_url], headers)
+      |> slack_adapter().post(options[:webhook_url], headers)
 
     case response do
       {:error, info} ->
@@ -54,7 +54,7 @@ defmodule BoomSlackNotifier.SlackNotifier do
     end
   end
 
-  @spec http_adapter() :: no_return()
-  defp http_adapter(),
-    do: Application.get_env(:boom_slack_notifier, :http_adapter, SlackClient.HTTPoisonAdapter)
+  @spec slack_adapter() :: no_return()
+  defp slack_adapter(),
+    do: Application.get_env(:boom_slack_notifier, :slack_adapter, SlackClient.HTTPoisonAdapter)
 end

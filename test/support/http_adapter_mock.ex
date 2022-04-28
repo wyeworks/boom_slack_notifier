@@ -1,8 +1,8 @@
 defmodule Support.HttpAdapterMock do
-  @behaviour BoomSlackNotifier.SlackClient.HttpAdapter
+  @behaviour BoomSlackNotifier.SlackAdapter
   alias Support.Helpers
 
-  @impl BoomSlackNotifier.SlackClient.HttpAdapter
+  @impl BoomSlackNotifier.SlackAdapter
 
   @spec post(any, binary, any) :: {:ok, any} | {:error, any}
   def post(_body, "failing_url", _headers) do

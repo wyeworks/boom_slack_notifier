@@ -49,12 +49,12 @@ If you don't already have a webhook setup for Slack, you can follow the steps be
 
 By default BoomSlackNotifier uses [HTTPoison](https://github.com/edgurgel/httpoison) as the http client. 
 
-You can setup your favorite client by warpping it with the `SlackClient.HttpAdapter` behaviour, for example:
+You can setup your favorite client by warpping it with the `HttpAdapter` behaviour, for example:
 
 ```
 #mojito_http_adapter.ex
 
-  @impl BoomSlackNotifier.SlackClient.HttpAdapter
+  @impl BoomSlackNotifier.SlackAdapter
   @spec post(any, binary, any) :: {:ok, any} | {:error, any}
   def post(body, url, headers) do
     {:ok, response} = Mojito.request(body: body, method: :post, url: url, headers: headers)
@@ -67,13 +67,13 @@ And then specifying it in your application configuration:
 ```
 #config.exs
 
-config :boom_slack_notifier, :http_adapter, MyApp.MojitoHttpAdapter
+config :boom_slack_notifier, :slack_adapter, MyApp.MojitoHttpAdapter
 
 ```
 
 Default configuration (not required): 
 ```
-config :boom_slack_notifier, :http_adapter, BoomSlackNotifier.SlackClient.HTTPoisonAdapter
+config :boom_slack_notifier, :slack_adapter, BoomSlackNotifier.SlackClient.HTTPoisonAdapter
 ```
 ## License
 

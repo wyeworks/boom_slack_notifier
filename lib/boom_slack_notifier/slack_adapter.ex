@@ -1,20 +1,18 @@
-defmodule BoomSlackNotifier.SlackClient.HttpAdapter do
+defmodule BoomSlackNotifier.SlackAdapter do
   @moduledoc """
-
-  Defines a behaviour for http requests
 
   By default BoomSlackNotifier uses [HTTPoison](https://github.com/edgurgel/httpoison) as the http client.
 
-  You can setup your favorite client by implenting the `SlackClient.HttpAdapter` behaviour around it, for example:
+  You can setup your favorite client by warpping it with the `HttpAdapter` behaviour, for example:
 
   ```
-  #mint_http_adapter.ex
+  #mojito_http_adapter.ex
 
-  @impl BoomSlackNotifier.SlackClient.HttpAdapter
+  @impl BoomSlackNotifier.SlackAdapter
   @spec post(any, binary, any) :: {:ok, any} | {:error, any}
   def post(body, url, headers) do
     {:ok, response} = Mojito.request(body: body, method: :post, url: url, headers: headers)
-    ...
+    # ...
   end
   ```
 
@@ -23,8 +21,13 @@ defmodule BoomSlackNotifier.SlackClient.HttpAdapter do
   ```
   #config.exs
 
-  config :boom_slack_notifier, :http_adapter, MyApp.SomeHttpAdapter
+  config :boom_slack_notifier, :slack_adapter, MyApp.MojitoHttpAdapter
 
+  ```
+
+  Default configuration (not required):
+  ```
+  config :boom_slack_notifier, :slack_adapter, BoomSlackNotifier.SlackClient.HTTPoisonAdapter
   ```
   """
 
