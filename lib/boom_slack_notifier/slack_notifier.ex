@@ -47,7 +47,7 @@ defmodule BoomSlackNotifier.SlackNotifier do
 
     case response do
       {:error, info} ->
-        Logger.error("An error occurred when sending a notification: #{info}")
+        Logger.error("An error occurred when sending a notification: #{inspect(info)}")
 
       _ ->
         nil

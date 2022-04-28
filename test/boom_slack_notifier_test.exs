@@ -94,7 +94,7 @@ defmodule BoomSlackNotifierTest do
 
              Process.sleep(100)
            end) =~
-             "An error occurred when sending a notification: Could not resolve URL"
+             "An error occurred when sending a notification: %{reason: \"Could not resolve URL\"}"
   end
 
   test "request is sent to webhook" do
