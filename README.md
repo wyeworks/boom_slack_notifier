@@ -1,6 +1,6 @@
 # BoomSlackNotifier
 
-Provides a slack notifier for the [BoomNotifier](https://github.com/wyeworks/boom) exception notification package.
+Provides a Slack notifier for the [BoomNotifier](https://github.com/wyeworks/boom) exception notification package.
 
 You can read the full documentation at [https://hexdocs.pm/boom_slack_notifier](https://hexdocs.pm/boom_slack_notifier).
 
@@ -35,7 +35,9 @@ defmodule YourApp.Router do
 
 To configure it, you need to set the `webhook_url` in the `options` keyword list. A `POST` request with a `json` will be made to that webhook when an error ocurrs with the relevant information.
 
-If you don't already have a webhook setup for slack, you can follow the steps below:
+### Setting up a Slack webhook
+
+If you don't already have a webhook setup for Slack, you can follow the steps below:
 
 1. Go to [Slack API](https://api.slack.com/) > My Apps
 2. Create a new application
