@@ -98,7 +98,6 @@ defmodule BoomSlackNotifierTest do
   end
 
   test "request is sent to webhook" do
-    Application.put_env(:boom_slack_notifier, :test_webhook_url, value: @success_webhook_url)
 
     conn = conn(:get, "/")
 
