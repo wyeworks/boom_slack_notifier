@@ -98,7 +98,6 @@ defmodule BoomSlackNotifierTest do
   end
 
   test "request is sent to webhook" do
-
     conn = conn(:get, "/")
 
     catch_error(TestRouter.call(conn, TestRouter.init([])))
