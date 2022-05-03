@@ -3,7 +3,7 @@ defmodule BoomSlackNotifier.SlackAdapter do
 
   By default BoomSlackNotifier uses [HTTPoison](https://github.com/edgurgel/httpoison) as the http client.
 
-  You can setup your favorite client by warpping it with the `HttpAdapter` behaviour, for example:
+  You can setup your favorite client by warpping it with the `SlackAdapter` behaviour, for example:
 
   ```
   #mojito_http_adapter.ex

@@ -49,7 +49,7 @@ If you don't already have a webhook setup for Slack, you can follow the steps be
 
 By default BoomSlackNotifier uses [HTTPoison](https://github.com/edgurgel/httpoison) as the http client. 
 
-You can setup your favorite client by warpping it with the `HttpAdapter` behaviour, for example:
+You can setup your favorite client by warpping it with the `SlackAdapter` behaviour, for example:
 
 ```
 #mojito_http_adapter.ex
