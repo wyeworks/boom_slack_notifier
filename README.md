@@ -1,4 +1,8 @@
 # BoomSlackNotifier
+[![hex](https://img.shields.io/hexpm/v/boom_slack_notifier?color=78529a)](https://hex.pm/packages/boom_slack_notifier)
+[![Elixir CI](https://github.com/wyeworks/boom_slack_notifier/actions/workflows/elixir.yml/badge.svg)](https://github.com/wyeworks/boom_slack_notifier/actions/workflows/elixir.yml)
+
+---
 
 Provides a Slack notifier for the [BoomNotifier](https://github.com/wyeworks/boom) exception notification package.
 
